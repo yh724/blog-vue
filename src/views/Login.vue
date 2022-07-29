@@ -95,6 +95,8 @@
     }
 
     #root {
+        height: 745px;
+        width: 1536px;
         background-image: url("../assets/login.png");
         background-repeat: no-repeat;
         background-size: 100%;

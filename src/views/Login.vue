@@ -44,6 +44,7 @@
         name: 'Login',
         methods: {
             submitForm(formName) {
+                this.$router.push('/menu')
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         alert('submit!');

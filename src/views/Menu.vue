@@ -47,14 +47,6 @@
                             </el-col>
                         </el-row>
                     </div>
-                    <!-- <el-row type="flex" justify="end" style="align-items: center">
-                         <el-col :span="1">admin</el-col>
-                         <el-col :span="2"><el-avatar :size="50" :src="avatorURL"/></el-col>
-                         <el-col :span="3" style="font-size: 36px"><i class="el-icon-s-promotion" style="color: #42b983"></i></el-col>
-                         <el-col :span="4" style="font-size: 36px"><i class="el-icon-info" style="color: #409EFF"></i></el-col>
-                         <el-col :span="5" style="font-size: 36px"><i class="el-icon-paperclip"></i></el-col>
-                         <el-col :span="6" style="font-size: 36px"><i class="el-icon-s-home" style="color: #F56C6C"></i></el-col>
-                     </el-row>-->
                 </el-header>
                 <el-main>
                     <router-view/>
@@ -88,7 +80,6 @@
 <style scoped>
     .el-aside {
         width: 200px;
-        height: 745px;
     }
 
     .el-header {

@@ -6,6 +6,9 @@ import router from './router'
 import store from './store'
 import './fonts/iconfont.css'
 import * as echarts from 'echarts';
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+Vue.use(mavonEditor);
 
 Vue.prototype.$echarts = echarts
 

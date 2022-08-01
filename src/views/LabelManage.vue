@@ -1,11 +1,31 @@
 <template>
-    <h1>pageThree</h1>
+    <div>
+        <mavon-editor
+                ref="md"
+                placeholder="请输入文档内容..."
+                :boxShadow="true"
+                style="z-index:1;border: 1px solid #d9d9d9;height:50vh"
+                v-model="content"
+        />
+    </div>
 </template>
 
 <script>
     export default {
-        name: "LabelManage"
-    }
+        name: "home",
+        components: {},
+        data() {
+            return {
+                content: "",
+            };
+        },
+        methods: {
+            // 上传图片方法
+            $imgAdd(pos, $file) {
+                console.log(pos, $file);
+            }
+        }
+    };
 </script>
 
 <style scoped>

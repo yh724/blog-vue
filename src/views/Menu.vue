@@ -80,6 +80,7 @@
 <style scoped>
     .el-aside {
         width: 200px;
+        height: 745px;
     }
 
     .el-header {

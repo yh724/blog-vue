@@ -68,18 +68,17 @@
         <el-table-column
             property="articleTitle"
             label="标题"
-            width="300">
-
+            width="240">
         </el-table-column>
         <el-table-column
             prop="userId"
             label="作者"
-            width="150">
+            width="100">
         </el-table-column>
         <el-table-column
             prop="articleSort"
             label="分类"
-            width="120">
+            width="100">
         </el-table-column>
         <el-table-column
             prop="articleLabel"

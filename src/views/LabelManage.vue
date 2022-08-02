@@ -20,10 +20,6 @@
             };
         },
         methods: {
-            // 上传图片方法
-            $imgAdd(pos, $file) {
-                console.log(pos, $file);
-            }
         }
     };
 </script>

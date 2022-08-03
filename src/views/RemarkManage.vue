@@ -1,6 +1,10 @@
 <template>
     <div>
-        <h1>pageFour</h1>
+      <div style="font-size: xx-large;font-weight: bolder">
+        <i class="el-icon-s-fold"></i>
+        评论管理
+      </div>
+      <el-divider />
     </div>
 </template>
 

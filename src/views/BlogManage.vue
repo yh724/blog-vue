@@ -213,6 +213,7 @@
           <el-button
               size="mini"
               type="danger"
+              slot="reference"
               @click="deleteOneArticle(scope.$index,scope.row.articleId)">删除
           </el-button>
         </template>
@@ -257,37 +258,37 @@ export default {
       const _this = this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          switch (formName){
-            case 'saveForm':{
+          switch (formName) {
+            case 'saveForm': {
               _this.saveDialog = false;
-              axios.post('/articles',this.saveForm).then(function (res){
-                if(res.data === 'success'){
+              axios.post('/articles', this.saveForm).then(function (res) {
+                if (res.data === 'success') {
                   _this.$message({
-                    message:'添加成功！',
+                    message: '添加成功！',
                     type: 'success'
                   })
                   _this.page(1)
-                }else {
+                } else {
                   _this.$message({
-                    message:'添加失败！',
+                    message: '添加失败！',
                     type: 'error'
                   })
                 }
               })
               break;
             }
-            case 'updateForm':{
+            case 'updateForm': {
               _this.updateDialog = false;
-              axios.put('/articles',this.updateForm).then(function (res){
-                if(res.data === 'success'){
+              axios.put('/articles', this.updateForm).then(function (res) {
+                if (res.data === 'success') {
                   _this.$message({
-                    message:'修改成功！',
+                    message: '修改成功！',
                     type: 'success'
                   })
                   _this.page(1)
-                }else {
+                } else {
                   _this.$message({
-                    message:'修改失败！',
+                    message: '修改失败！',
                     type: 'error'
                   })
                 }
@@ -365,7 +366,7 @@ export default {
        * 添加博客对话框的表单数据项
        * **/
       saveForm: {
-        userId:'',
+        userId: '',
         articleTitle: '',
         articleSort: '',
         articleLabel: '',
@@ -376,8 +377,8 @@ export default {
        * 编辑博客对话框的表单数据项
        * **/
       updateForm: {
-        articleId:'',
-        userId:'',
+        articleId: '',
+        userId: '',
         articleTitle: '',
         articleSort: '',
         articleLabel: '',

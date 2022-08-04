@@ -23,19 +23,34 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="6">
-            <el-form-item label="分类" prop="articleSort">
-              <el-select v-model="saveForm.articleSort" placeholder="请选择博客分类">
-                <el-option label="前台开发" value="1"></el-option>
-                <el-option label="后台开发" value="2"></el-option>
+            <el-form-item label="分类" prop="articleSortId">
+              <el-select v-model="saveForm.articleSortId" placeholder="请选择博客分类">
+                <el-option
+                    v-for="item in sortList"
+                    :key="item.sortId"
+                    :label="item.sortName"
+                    :value="item.sortId">
+                </el-option>
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
-            <el-form-item label="标签" prop="articleLabel">
-              <el-select v-model="saveForm.articleLabel" placeholder="请选择博客标签">
-                <el-option label="Java" value="Java"></el-option>
-                <el-option label="Python" value="Python"></el-option>
-              </el-select>
+          <el-col :span="18">
+            <el-form-item label="标签" prop="articleLabelIds">
+              <el-popover
+                  placement="right"
+                  trigger="click">
+                <el-transfer
+                    v-model="saveForm.articleLabelIds"
+                    :button-texts="['删除', '添加']"
+                    :titles="['标签池','选中的标签']"
+                    :props="{
+                      key: 'labelId',
+                      label: 'labelName'
+                    }"
+                    :data="labelData">
+                </el-transfer>
+                <el-button slot="reference" type="success">点我选择标签</el-button>
+              </el-popover>
             </el-form-item>
           </el-col>
         </el-row>
@@ -70,19 +85,34 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="6">
-            <el-form-item label="分类" prop="articleSort">
-              <el-select v-model="updateForm.articleSort" placeholder="请选择博客分类">
-                <el-option label="前台开发" value="1"></el-option>
-                <el-option label="后台开发" value="2"></el-option>
+            <el-form-item label="分类" prop="articleSortId">
+              <el-select v-model="updateForm.articleSortId" placeholder="请选择博客分类">
+                <el-option
+                    v-for="item in sortList"
+                    :key="item.sortId"
+                    :label="item.sortName"
+                    :value="item.sortId">
+                </el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="标签" prop="articleLabel">
-              <el-select v-model="updateForm.articleLabel" placeholder="请选择博客标签">
-                <el-option label="Java" value="Java"></el-option>
-                <el-option label="Python" value="Python"></el-option>
-              </el-select>
+            <el-form-item label="标签" prop="articleLabelIds">
+              <el-popover
+                  placement="right"
+                  trigger="click">
+                <el-transfer
+                    v-model="updateForm.articleLabelIds"
+                    :button-texts="['删除', '添加']"
+                    :titles="['标签池','选中的标签']"
+                    :props="{
+                      key: 'labelId',
+                      label: 'labelName'
+                    }"
+                    :data="labelData">
+                </el-transfer>
+                <el-button slot="reference" type="success">点我选择标签</el-button>
+              </el-popover>
             </el-form-item>
           </el-col>
         </el-row>
@@ -161,45 +191,52 @@
           width="63">
       </el-table-column>
       <el-table-column
-          property="articleTitle"
+          property="article.articleTitle"
           label="标题"
           width="240">
       </el-table-column>
       <el-table-column
-          prop="userId"
+          prop="user.userName"
           label="作者"
           width="100">
       </el-table-column>
       <el-table-column
-          prop="articleSort"
+          prop="articleSort.sortName"
           label="分类"
           width="100">
       </el-table-column>
       <el-table-column
-          prop="articleLabel"
+          prop="articleLabels"
           label="标签"
-          width="80">
+          width="280">
         <template slot-scope="scope">
-          <el-tag type="warning">{{ scope.row.articleLabel }}</el-tag>
+          <el-tag
+              v-for="label in scope.row.articleLabels"
+              :color="label.labelColor"
+              effect="dark">
+              <span style="color: white">
+                {{ label.labelName }}
+              </span>
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column
-          prop="articleViews"
+          prop="article.articleViews"
           label="浏览量"
           width="80">
       </el-table-column>
       <el-table-column
-          prop="articleCommentCount"
+          prop="article.articleCommentCount"
           label="评论数"
           width="80">
       </el-table-column>
       <el-table-column
-          prop="articleLikeCount"
+          prop="article.articleLikeCount"
           label="点赞数"
           width="80">
       </el-table-column>
       <el-table-column
-          prop="articleDate"
+          prop="article.articleDate"
           label="发布时间"
           width="160">
       </el-table-column>
@@ -214,7 +251,7 @@
               size="mini"
               type="danger"
               slot="reference"
-              @click="deleteOneArticle(scope.$index,scope.row.articleId)">删除
+              @click="deleteOneArticle(scope.$index,scope.row.article.articleId)">删除
           </el-button>
         </template>
       </el-table-column>
@@ -246,11 +283,14 @@ export default {
       console.log(`每页 ${val} 条`);
     },
     editArticle(index, row) {
-      this.updateForm.articleId = row.articleId;
-      this.updateForm.articleTitle = row.articleTitle;
-      this.updateForm.articleSort = row.articleSort;
-      this.updateForm.articleLabel = row.articleLabel;
-      this.updateForm.articleContent = row.articleContent;
+      this.updateForm.articleId = row.article.articleId;
+      this.updateForm.articleTitle = row.article.articleTitle;
+      this.updateForm.articleSortId = row.articleSort.sortId;
+      this.updateForm.articleContent = row.article.articleContent;
+      let arr = [];
+      row.articleLabels.forEach(e => arr.push(e.labelId))
+      this.updateForm.articleLabelIds = arr;
+      console.log(this.updateForm)
       this.updateDialog = true;
     },
 
@@ -267,6 +307,9 @@ export default {
                     message: '添加成功！',
                     type: 'success'
                   })
+                  _this.saveForm = {};
+                  _this.labelData = [];
+                  _this.getLabelList();
                   _this.page(1)
                 } else {
                   _this.$message({
@@ -285,7 +328,9 @@ export default {
                     message: '修改成功！',
                     type: 'success'
                   })
-                  _this.page(1)
+                  _this.page(1);
+                  _this.labelData = [];
+                  _this.getLabelList();
                 } else {
                   _this.$message({
                     message: '修改失败！',
@@ -330,30 +375,38 @@ export default {
         _this.total = res.data.total;
         _this.articlesTable = res.data.articlesList;
       })
+    },
+
+    getLabelList() {
+      const _this = this;
+      axios.get('/labels').then(function (res) {
+        _this.labelData = res.data;
+      })
+    },
+
+    getSortList() {
+      const _this = this;
+      axios.get('/sorts').then(function (res) {
+        _this.sortList = res.data;
+      })
     }
   },
   data() {
     return {
       articlesTable: [{
-        articleId: '',
-        articleTitle: '21天学会Java：从入门到放弃',
-        userId: '王建国',
-        articleSort: '后端开发',
-        articleLabel: 'Java',
-        articleViews: 123,
-        articleCommentCount: 78,
-        articleLikeCount: 99,
-        articleDate: '2022-08-01 10:39:22'
-      }, {
-        articleId: '',
-        articleTitle: '21天学会Java：从入门到放弃',
-        userId: '王建国',
-        articleSort: '后端开发',
-        articleLabel: 'Java',
-        articleViews: 123,
-        articleCommentCount: 78,
-        articleLikeCount: 99,
-        articleDate: '2022-08-01 10:39:22'
+        article: {
+          articleId: '',
+          userId: '王建国',
+          articleTitle: '21天学会Java：从入门到放弃',
+          articleContent: '',
+          articleViews: 123,
+          articleCommentCount: 78,
+          articleLikeCount: 99,
+          articleDate: '2022-08-01 10:39:22',
+        },
+        user: {},
+        articleSort: {},
+        articleLabels: [],
       }],
       currentPage: 1,
       pageSize: 5,
@@ -368,8 +421,8 @@ export default {
       saveForm: {
         userId: '',
         articleTitle: '',
-        articleSort: '',
-        articleLabel: '',
+        articleSortId: '',
+        articleLabelIds: [],
         articleContent: ''
       },
 
@@ -380,8 +433,8 @@ export default {
         articleId: '',
         userId: '',
         articleTitle: '',
-        articleSort: '',
-        articleLabel: '',
+        articleSortId: '',
+        articleLabelIds: [],
         articleContent: ''
       },
 
@@ -398,11 +451,16 @@ export default {
         articleContent: [
           {required: true, message: '请填写博客内容', trigger: 'blur'}
         ]
-      }
+      },
+      /* 查询到的label列表 */
+      labelData: [],
+      sortList: {}
     }
   },
   created() {
     this.page(1);
+    this.getLabelList();
+    this.getSortList();
     this.saveForm.userId = 1;
     this.updateForm.userId = 1;
   }
@@ -413,5 +471,9 @@ export default {
 <style scoped>
 .el-divider {
   background: #55a532;
+}
+
+.el-tag {
+  margin: 5px;
 }
 </style>

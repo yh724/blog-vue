@@ -204,6 +204,7 @@ export default {
             type: 'success',
             message: response.message.message
           })
+          _this.page(1);
         }else {
           console.log(response.message.typeCode)
           _this.$message({
@@ -212,7 +213,6 @@ export default {
           })
         }
       })
-      this.page(1);
     }
   },
   data() {

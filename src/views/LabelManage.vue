@@ -28,13 +28,13 @@
           </div>
           <div>
             <el-form label-position="top" label-width="80px" ref="labelForm" :model="labelForm">
-              <el-form-item label="标签名称">
+              <el-form-item label="标签名称" prop="labelName">
                 <el-input v-model="labelForm.labelName"></el-input>
               </el-form-item>
-              <el-form-item label="标签别名">
+              <el-form-item label="标签别名" prop="labelAlias">
                 <el-input v-model="labelForm.labelAlias"></el-input>
               </el-form-item>
-              <el-form-item label="标签颜色">
+              <el-form-item label="标签颜色" prop="labelColor">
                 <el-col :span="20">
                   <el-input v-model="labelForm.labelColor"></el-input>
                 </el-col>
@@ -97,9 +97,7 @@ export default {
   },
   methods: {
     resetForm(formName) {
-      if (this.$refs[formName] !== undefined) {
-        this.$refs[formName].resetFields();
-      }
+      this.$refs[formName].resetFields();
     },
 
     page() {
@@ -107,7 +105,6 @@ export default {
       axios.get('/labels').then(function (res) {
         _this.tags = res.data;
       })
-      console.log(this.tags)
     },
 
     deleteTag(tag) {
@@ -162,8 +159,8 @@ export default {
       const _this = this;
       axios.put('/labels', this.labelForm).then(function (res) {
         _this.responseHandler(res.data);
+        _this.readTag('labelForm')
       })
-      this.resetForm('labelForm');
 
     }
   },
